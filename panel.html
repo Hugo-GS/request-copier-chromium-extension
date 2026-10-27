@@ -60,9 +60,25 @@
     
     .filter-row {
       display: flex;
+      flex-wrap: wrap;
       gap: 8px;
       margin-bottom: 12px;
       align-items: center;
+    }
+
+    /* Grows to fill the row, but may shrink past its content when space is tight */
+    .filter-row input[type="text"] {
+      flex: 1 1 200px;
+      min-width: 0;
+    }
+
+    /* Controls stay together and drop to their own line as a group */
+    .filter-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      flex: 0 1 auto;
     }
     
     input[type="text"] {
@@ -178,6 +194,15 @@
       display: flex;
       gap: 12px;
       align-items: center;
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+    /* Below this width the toolbar has no room for the "Format:" wording */
+    @media (max-width: 560px) {
+      .format-options .format-label {
+        display: none;
+      }
     }
     
     label {
@@ -194,6 +219,319 @@
       padding: 6px 10px;
       border-radius: 4px;
     }
+    
+    /* The whole pill is one <label>, so a click anywhere in it toggles once */
+    .toggle-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      background: #3c3c3c;
+      border: 1px solid #555;
+      border-radius: 4px;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+
+    .toggle-pill:hover {
+      background: #4c4c4c;
+    }
+
+    .toggle-pill:focus-within {
+      border-color: #007acc;
+    }
+
+    /* Checked state reads at a glance without relying on the switch alone */
+    .toggle-pill:has(input:checked) {
+      background: #094771;
+      border-color: #007acc;
+    }
+    
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 32px;
+      height: 18px;
+    }
+    
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #555;
+      transition: 0.3s;
+      border-radius: 18px;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+      background-color: #007acc;
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(14px);
+    }
+    
+    input:focus + .slider {
+      box-shadow: 0 0 1px #007acc;
+    }
+    
+    .switch-label {
+      cursor: pointer;
+      margin: 0;
+      font-size: 12px;
+      color: #d4d4d4;
+    }
+    
+    .graphql-badge {
+      display: inline-block;
+      background: #e10098;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: bold;
+      margin-left: 4px;
+    }
+
+    /* Resource type filter bar */
+    .type-filter-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .type-btn {
+      background: none;
+      border: 1px solid transparent;
+      color: #888;
+      padding: 3px 8px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 11px;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .type-btn:hover {
+      color: #d4d4d4;
+      background: #2a2d2e;
+    }
+
+    .type-btn.active {
+      color: #d4d4d4;
+      background: #094771;
+      border-color: #007acc;
+    }
+
+    .invert-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 8px;
+      color: #888;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .invert-label input {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    /* Preview panel */
+    .main-split {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .main-split .requests-container {
+      flex: 1;
+      min-height: 80px;
+    }
+
+    .main-split.has-preview .requests-container {
+      flex: 0 0 55%;
+    }
+
+    .preview-panel {
+      display: none;
+      flex-direction: column;
+      border: 1px solid #333;
+      border-radius: 4px;
+      background: #252526;
+      min-height: 0;
+      flex: 1;
+      margin-top: 4px;
+    }
+
+    .preview-panel.visible {
+      display: flex;
+    }
+
+    .preview-summary {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      background: #2d2d2d;
+      border-bottom: 1px solid #333;
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    .preview-summary .method {
+      font-weight: bold;
+      font-size: 11px;
+      min-width: auto;
+    }
+
+    .preview-summary .url {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #9cdcfe;
+    }
+
+    .preview-summary .arrow {
+      color: #666;
+    }
+
+    .preview-summary .status-code {
+      min-width: auto;
+    }
+
+    .preview-tabs {
+      display: flex;
+      border-bottom: 1px solid #333;
+      flex-shrink: 0;
+    }
+
+    .preview-tab {
+      padding: 5px 14px;
+      font-size: 11px;
+      color: #888;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      border-radius: 0;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      font-family: inherit;
+    }
+
+    .preview-tab:hover {
+      color: #d4d4d4;
+      background: #2a2d2e;
+    }
+
+    .preview-tab.active {
+      color: #d4d4d4;
+      border-bottom-color: #007acc;
+    }
+
+    .preview-tab .tab-badge {
+      display: inline-block;
+      background: #3c3c3c;
+      color: #888;
+      padding: 0 5px;
+      border-radius: 8px;
+      font-size: 10px;
+      margin-left: 4px;
+    }
+
+    .preview-tab.active .tab-badge {
+      background: #094771;
+      color: #9cdcfe;
+    }
+
+    .preview-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 10px;
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .preview-body .kv-row {
+      display: flex;
+      gap: 8px;
+      padding: 2px 0;
+      border-bottom: 1px solid #2a2a2a;
+    }
+
+    .preview-body .kv-key {
+      color: #569cd6;
+      min-width: 120px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .preview-body .kv-val {
+      color: #ce9178;
+      word-break: break-all;
+    }
+
+    .preview-body .kv-val.masked {
+      color: #666;
+      font-style: italic;
+    }
+
+    .preview-body .json-key { color: #9cdcfe; }
+    .preview-body .json-string { color: #ce9178; }
+    .preview-body .json-number { color: #b5cea8; }
+    .preview-body .json-boolean { color: #569cd6; }
+    .preview-body .json-null { color: #569cd6; }
+
+    .preview-empty {
+      color: #666;
+      font-style: italic;
+      padding: 12px 0;
+    }
+
+    .preview-section-label {
+      color: #888;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 8px 0 4px;
+    }
+
+    .preview-section-label:first-child {
+      margin-top: 0;
+    }
   </style>
 </head>
 <body>
@@ -203,25 +541,73 @@
   </div>
   
   <div class="filter-row">
-    <input type="text" id="filter" placeholder="Filter requests (regex supported)...">
-    <div class="format-options">
-      <label>
-        Format:
-        <select id="format">
-          <option value="json">JSON</option>
-          <option value="curl">cURL + Response</option>
-          <option value="markdown">Markdown</option>
-        </select>
+    <input type="text" id="filter" placeholder="Filter URL or GraphQL operation (regex)..." title="Filter by method, URL, or GraphQL operation name. Regular expressions are supported.">
+    <div class="filter-controls">
+      <label class="toggle-pill" title="Show only GraphQL requests">
+        <span class="switch">
+          <input type="checkbox" id="graphqlToggle">
+          <span class="slider"></span>
+        </span>
+        <span class="switch-label">GraphQL</span>
+      </label>
+      <div class="format-options">
+        <label>
+          <span class="format-label">Format:</span>
+          <select id="format">
+            <option value="json">JSON</option>
+            <option value="curl">cURL + Response</option>
+            <option value="markdown">Markdown</option>
+            <option value="graphql">GraphQL</option>
+          </select>
+        </label>
+      </div>
+      <label class="toggle-pill" title="Strip __typename and raw query text from copied output">
+        <span class="switch">
+          <input type="checkbox" id="compactToggle" checked>
+          <span class="slider"></span>
+        </span>
+        <span class="switch-label">Compact</span>
       </label>
     </div>
   </div>
   
-  <div class="requests-container" id="requests">
-    <div class="empty-state">
-      Requests will appear here. Reload the page to capture traffic.
+  <div class="type-filter-row" id="typeFilterRow">
+    <button class="type-btn active" data-type="all">All</button>
+    <button class="type-btn" data-type="fetch">Fetch/XHR</button>
+    <button class="type-btn" data-type="document">Doc</button>
+    <button class="type-btn" data-type="stylesheet">CSS</button>
+    <button class="type-btn" data-type="script">JS</button>
+    <button class="type-btn" data-type="font">Font</button>
+    <button class="type-btn" data-type="image">Img</button>
+    <button class="type-btn" data-type="media">Media</button>
+    <button class="type-btn" data-type="manifest">Manifest</button>
+    <button class="type-btn" data-type="websocket">Socket</button>
+    <button class="type-btn" data-type="wasm">Wasm</button>
+    <button class="type-btn" data-type="other">Other</button>
+    <label class="invert-label">
+      <input type="checkbox" id="invertFilter">
+      Invert
+    </label>
+  </div>
+
+  <div class="main-split" id="mainSplit">
+    <div class="requests-container" id="requests">
+      <div class="empty-state">
+        Requests will appear here. Reload the page to capture traffic.
+      </div>
+    </div>
+
+    <div class="preview-panel" id="previewPanel">
+      <div class="preview-summary" id="previewSummary"></div>
+      <div class="preview-tabs" id="previewTabs">
+        <button class="preview-tab active" data-tab="payload">Payload</button>
+        <button class="preview-tab" data-tab="response">Response</button>
+        <button class="preview-tab" data-tab="headers">Headers</button>
+      </div>
+      <div class="preview-body" id="previewBody"></div>
     </div>
   </div>
-  
+
   <div class="actions">
     <button id="copyBtn" disabled>Copy Selected</button>
     <button id="clearBtn" class="secondary">Clear List</button>
